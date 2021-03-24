@@ -12,7 +12,7 @@
 
 > composer dump-autoload
 
-> composer create-project symfony/website-skeleton ./ "4.2.*"
+> composer create-project symfony/website-skeleton ./ "5.0.*"
 
 ``` 
 <VirtualHost *:80>   
@@ -35,98 +35,55 @@
 
 > composer remove symfony/requirements-checker
 
-> bin/console make:controller FrontController
+> http://local.app2115/admin
 
-> bin/console make:controller AdminController
-
-> bin/console make:entity Category
-
-> bin/console make:entity Video
-
-> bin/console make:user
-
-> bin/console make:entity User
-
-> bin/console make:form UserType
-
-> bin/console make:entity Comment
-
-> bin/console make:entity Subscription
-
-> bin/console make:form CategoryType
-
-> bin/console make:form VideoType
-
-> bin/console make:subscriber
+> http://local.app2115/api
 
 
 # Symfony Packages
 
-> https://flex.symfony.com/
+> https://symfony.com/doc/current/bundles/EasyAdminBundle/index.html
 
-> composer require symfony/maker-bundle --dev
+> composer require admin
 
-> composer require annotations symfony/apache-pack twig-bundle
+> composer require easycorp/easyadmin-bundle
 
-> composer require orm doctrine doctrine/annotations
+> composer require api
 
-> composer require symfony/asset logger symfony/debug-bundle symfony/var-dumper
+> composer require --dev api-platform/schema-generator
 
-> composer require symfony/flex maker
-
-> composer require orm-fixtures --dev
-
-> composer require web-profiler-bundle
-
-> composer require symfony/profiler-pack symfony/cache
-
-> composer require symfony/proxy-manager-bridge
-
-> composer require symfony/event-dispatcher
-
-> composer require symfony/validator doctrine/annotations
-
-> composer require browser-kit css-selector --dev
-
-> composer require symfony/swiftmailer-bundle sensio/framework-extra-bundle
-
-> composer require --dev symfony/phpunit-bridge phpunit/phpunit symfony/test-pack
-
-> composer require symfony/orm-pack symfony/form symfony/security-bundle
-
-> composer require sensiolabs/security-checker symfony/expression-language
-
-> sudo apt-get install php-xdebug
-
-> composer require symfony/translation symfony/filesystem
-
-> https://github.com/KnpLabs/KnpPaginatorBundle
-
-> composer require knplabs/knp-paginator-bundle knplabs/knp-time-bundle
-
-> composer require security
-
-> composer require --dev dama/doctrine-test-bundle
-
-
-# Git Repo Setup 
+> ERROR: Update composer.json and remove
 
 ```
-git init
-git add .
-git commit -m "project init"
-git remote add origin https://github.com/primarypartition/app2115.git
-git push -u origin master
+"symfony/polyfill-php72": "*"
 ```
+
+> composer update
+
+> ERROR: Or Replace in composer.json with
+
+```
+"symfony/polyfill-php73": "*"
+```
+
+> composer update
+
+> https://packagist.org/packages/vich/uploader-bundle
+
+> https://github.com/dustin10/VichUploaderBundle
+
+> https://symfony.com/doc/2.x/bundles/EasyAdminBundle/integration/vichuploaderbundle.html
+
+> composer require vich/uploader-bundle
 
 
 # Database 
 
-> composer require doctrine
+> https://developers.google.com/search/docs/data-types/product
 
-> composer require doctrine/annotations
+> https://schema.org/Product
 
-> composer require orm
+> vendor/bin/schema generate-types src/ config/schema.yaml
 
 > .env
 
@@ -136,27 +93,45 @@ DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 
 > bin/console doctrine:database:create
  
-> bin/console make:migration
+> bin/console doctrine:schema:update --force
 
-> bin/console doctrine:migrations:migrate
+> bin/console make:admin:dashboard
 
-> bin/console list doctrine
+> php bin/console make:admin:crud
+
+> Update Admin/DashboardController
+
+```
+//...
+
+use App\Entity\Offer;
+use App\Entity\Product;
+
+//...
+
+    public function configureMenuItems(): iterable
+    {
+        yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('Offer', 'fa fa-home', Offer::class);
+        yield MenuItem::linkToCrud('Product', 'fa fa-home', Product::class);      
+    }
+
+//...
+
+```
 
 > bin/console doctrine:schema:drop -n -q --force --full-database
 
 ```
 bin/console doctrine:schema:drop -n -q --force --full-database &&
 rm migrations/*.php &&
-bin/console make:migration &&
-bin/console doctrine:migrations:migrate -n -q &&
+bin/console doctrine:schema:update --force &&
 bin/console doctrine:fixtures:load -n -q
 ```
 
-> bin/console doctrine:fixtures:load
+> bin/console make:entity Product
 
-> bin/console doctrine:fixtures:load -n -q
-
-> bin/console debug:autowiring
+> bin/console make:entity Entity
 
 
 # .htaccess file in public folder
@@ -352,11 +327,12 @@ Change the HerokuCache.php/FilesCache.php file from the Utils folder to look lik
 > heroku open
 
 
-# PayPal
+# Git Repo Setup 
 
-> https://github.com/paypal/ipn-code-samples
-
-> https://github.com/paypal/ipn-code-samples/tree/master/php
-
-> https://github.com/paypal/ipn-code-samples/blob/master/php/PaypalIPN.php
-
+```
+git init
+git add .
+git commit -m "project init"
+git remote add origin https://github.com/primarypartition/app2115.git
+git push -u origin master
+```
