@@ -19,10 +19,15 @@
 	ServerName local.app2115
 	DocumentRoot "C:\xampp\htdocs\app2115\public" 
 </VirtualHost>
+
+<VirtualHost *:80>   
+	ServerName local.app2115.client
+	DocumentRoot "C:\xampp\htdocs\app2115\client" 
+</VirtualHost>
 ```
 
 ```
-127.0.0.1        local.app2115
+127.0.0.1        local.app2115.client
 ```
 
 > https://symfony.com/download
@@ -75,6 +80,16 @@
 > https://symfony.com/doc/2.x/bundles/EasyAdminBundle/integration/vichuploaderbundle.html
 
 > composer require vich/uploader-bundle
+
+> composer require symfony/security-bundle
+
+> composer require doctrine maker
+
+> composer require orm-fixtures --dev
+
+> composer require --dev symfony/profiler-pack
+
+> composer require nelmio/cors-bundle
 
 
 # Database 
@@ -131,7 +146,15 @@ bin/console doctrine:fixtures:load -n -q
 
 > bin/console make:entity Product
 
-> bin/console make:entity Entity
+> bin/console make:entity Offer
+
+> bin/console make:user
+
+> bin/console make:auth
+
+> bin/console security:encode-password
+
+> php bin/console make:fixtures UserFixtures
 
 
 # .htaccess file in public folder
