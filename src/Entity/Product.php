@@ -17,6 +17,10 @@ use Doctrine\Common\Collections\Collection;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Any offered product or service. For example: a pair of shoes; a concert ticket; the rental of a car; a haircut; or an episode of a TV show streamed online.
@@ -25,8 +29,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @ORM\Entity
  * @Vich\Uploadable
- * @ApiResource(iri="http://schema.org/Product")
+ * @ApiResource(iri="http://schema.org/Product",normalizationContext={"groups"={"read"}},denormalizationContext={"groups"={"write"}})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "name": "partial", "description": "partial"})
  * @ApiFilter(OrderFilter::class, properties={"id", "name"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(ExistsFilter::class, properties={"image"})
  */
 class Product
 {
@@ -36,6 +42,7 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     * @Groups({"read"})
      */
     private $id;
 
@@ -45,6 +52,7 @@ class Product
      * @ORM\Column(type="text")
      * @ApiProperty(iri="http://schema.org/name")
      * @Assert\NotNull
+     * @Groups({"read","write"})
      */
     private $name;
 
@@ -54,6 +62,7 @@ class Product
      * @ORM\Column(type="text")
      * @ApiProperty(iri="http://schema.org/description")
      * @Assert\NotNull
+     * @Groups({"read","write"})
      */
     private $description;
 
@@ -62,6 +71,7 @@ class Product
      *
      * @ORM\Column(type="text", nullable=true)
      * @ApiProperty(iri="http://schema.org/image")
+     * @Groups({"read","write"})
      */
     private $image;
 
@@ -79,6 +89,7 @@ class Product
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Offer", mappedBy="product",cascade={"remove","persist"})
+     * @Groups({"read","write"})
      */
     private $offers;
 

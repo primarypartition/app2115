@@ -44,6 +44,16 @@
 
 > http://local.app2115/api
 
+> bin/console make:controller ApiController
+
+> openssl genrsa -out config/jwt/private.pem -aes256 4096
+
+> winpty openssl genrsa -out config/jwt/private.pem -aes256 4096
+
+> openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+
+> winpty openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+
 
 # Symfony Packages
 
@@ -90,6 +100,8 @@
 > composer require --dev symfony/profiler-pack
 
 > composer require nelmio/cors-bundle
+
+> composer require "lexik/jwt-authentication-bundle"
 
 
 # Database 
@@ -173,35 +185,6 @@ bin/console doctrine:fixtures:load -n -q
     </IfModule>
 </IfModule>
 ```
-
-
-# Webpack Encore
-
-> npm init
-
-> npm install @symfony/webpack-encore --save-dev
-
-> npm install --save jquery
-
-> touch webpack.config.js
-
-```
-var Encore = require('@symfony/webpack-encore');
-
-Encore
-    .setOutputPath('public/build/')
-    .setPublicPath('/build')
-    .addEntry('js/custom', './build/js/custom.js')
-    .addStyleEntry('css/custom', ['./build/css/custom.css'])
-    // .autoProvidejQuery()
-;
-
-module.exports = Encore.getWebpackConfig();
-```
-
-> ./node_modules/.bin/encore production
-
-> ./node_modules/.bin/encore dev --watch
 
 
 # Commands
