@@ -1,7 +1,11 @@
 import { baseURL } from '../../src/config.js';
 
 export class AddOffer {
-
+    constructor() {
+        axios.defaults.headers.common = {
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
+        }
+    }
 
     AddOffer(url, price, priceCurrency, product_id) {
         let params = {
@@ -20,6 +24,7 @@ export class AddOffer {
 
         axios.post(baseURL + '/api/offers', params, config)
             .then((response) => {
+                console.log(localStorage.getItem('jwt_token'));
                 console.log(response);
             }).catch((error) => {
                 console.log(error)

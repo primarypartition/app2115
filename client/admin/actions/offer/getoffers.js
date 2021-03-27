@@ -3,6 +3,9 @@ import { baseURL } from '../../src/config.js';
 export class GetOffers {
 
     constructor() {
+        axios.defaults.headers.common = {
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
+        }
 
         axios.get(baseURL + '/api/offers')
             .then((response) => {

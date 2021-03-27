@@ -20,10 +20,15 @@ security:
             stateless: true
             anonymous: true
 
+        api_offers:
+            pattern: ^/api/offers
+            stateless: true
+            anonymous: true
+
         api:
             pattern: ^/api
             stateless: true
-            anonymous: true
+            anonymous: false
             provider: app_user_provider
             guard:
                 authenticators:

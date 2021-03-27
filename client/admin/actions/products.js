@@ -3,6 +3,10 @@ import { baseURL } from '../src/config.js';
 export class Products {
 
     constructor() {
+        axios.defaults.headers.common = {
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
+        }
+
         axios.get(baseURL + '/api/products?pagination=false')
             .then((response) => {
                 // console.log(response.data['hydra:member']);

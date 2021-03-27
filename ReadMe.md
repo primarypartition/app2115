@@ -54,6 +54,8 @@
 
 > winpty openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 
+> bin/console make:subscriber
+
 
 # Symfony Packages
 

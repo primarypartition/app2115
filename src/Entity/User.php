@@ -2,18 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User implements UserInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -33,6 +34,21 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Offer", mappedBy="user", orphanRemoval=true)
+     */
+    private $offers;
+
+    public function __construct()
+    {
+        $this->offers = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->email;
+    }
 
     public function getId(): ?int
     {
@@ -96,14 +112,11 @@ class User implements UserInterface
     }
 
     /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
      * @see UserInterface
      */
-    public function getSalt(): ?string
+    public function getSalt()
     {
-        return null;
+        // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
     /**
@@ -114,4 +127,36 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * @return Collection|Offer[]
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(Offer $offer): self
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers[] = $offer;
+            $offer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offer $offer): self
+    {
+        if ($this->offers->contains($offer)) {
+            $this->offers->removeElement($offer);
+            // set the owning side to null (unless already changed)
+            if ($offer->getUser() === $this) {
+                $offer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }
+

@@ -7,9 +7,9 @@ import { Register } from './actions/register.js';
 import { Login } from './actions/login.js';
 
 // Register.register();
-
-let login = new Login;
-login.getJWTToken();
+// console.log(localStorage.getItem('jwt_token'));
+// let login = new Login;
+// login.getJWTToken();
 // login.logout();
 
 // offer
