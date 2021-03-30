@@ -22,7 +22,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *normalizationContext={"groups"={"read"}},denormalizationContext={"groups"={"write"}}, attributes={"pagination_enabled"=false},
  * itemOperations={
  * "get",
-* "delete"={"security"="object.getUser() == user", "security_message"="Sorry, but you are not the offer author."}
+* "delete"={"security"="object.getUser() == user", "security_message"="Sorry, but you are not the offer author."},
+* "patch"={"validation_groups"={"patchValidation"}}
+ *     },
+ *     collectionOperations={
+ *         "get",
+ *         "post"={"validation_groups"={"postValidation"}}
  *     }
  *)
  */
@@ -63,7 +68,7 @@ class Offer
      *
      * @ORM\Column(type="text")
      * @ApiProperty(iri="http://schema.org/priceCurrency")
-     * @Assert\NotNull
+     * @Assert\NotBlank(groups={"postValidation"})
      * @Groups({"read","write"})
      */
     private $priceCurrency;

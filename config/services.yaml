@@ -36,3 +36,13 @@ services:
         autowire: true
         tags:
             - { name: kernel.view }
+
+    event.authentication_success_listener:
+        class: App\Listener\AuthenticationSuccessListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
+    App\Listener\ResetPasswordRequestListener:
+        tags:
+            - { name: kernel.event_listener, event: reset.password.requested, method: onResetPasswordRequestedAction }
+

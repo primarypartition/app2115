@@ -7,8 +7,23 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+
+use App\Controller\ResetPasswordController;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ApiResource(
+ * itemOperations={
+ *     "patch",
+ *     "change_password"={
+ *         "method"="PATCH",
+ *         "path"="/users/{id}/change-password",
+ *         "controller"=ResetPasswordController::class
+ *     }
+ * }
+ * )
  */
 class User implements UserInterface
 {
@@ -37,8 +52,14 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Offer", mappedBy="user", orphanRemoval=true)
+     * @ApiSubresource
      */
     private $offers;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\LostPassword", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $lostPassword;
 
     public function __construct()
     {
@@ -154,6 +175,24 @@ class User implements UserInterface
             if ($offer->getUser() === $this) {
                 $offer->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getLostPassword(): ?LostPassword
+    {
+        return $this->lostPassword;
+    }
+
+    public function setLostPassword(?LostPassword $lostPassword): self
+    {
+        $this->lostPassword = $lostPassword;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = null === $lostPassword ? null : $this;
+        if ($lostPassword->getUser() !== $newUser) {
+            $lostPassword->setUser($newUser);
         }
 
         return $this;

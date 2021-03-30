@@ -1,13 +1,16 @@
 import { baseURL } from '../../src/config.js';
+import { Login } from '../login.js';
 
-export class GetOffers {
+export class GetOffers extends Login {
 
     constructor() {
-        axios.defaults.headers.common = {
-            'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
-        }
+        super('GetOffers')
+    }
 
-        axios.get(baseURL + '/api/offers')
+    GetOffers() {
+        let userId = localStorage.getItem('user_id')
+        if (userId == null) return
+        axios.get(baseURL + '/api/users/' + userId + '/offers')
             .then((response) => {
                 // console.log(response.data['hydra:member']);
                 response.data['hydra:member'].forEach(offer => {

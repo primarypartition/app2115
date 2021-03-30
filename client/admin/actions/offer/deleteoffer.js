@@ -1,20 +1,23 @@
 import { baseURL } from '../../src/config.js';
+import { Login } from '../login.js';
 
-export class DeleteOffer {
+export class DeleteOffer extends Login {
 
-    constructor() {
-        axios.defaults.headers.common = {
-            'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
-        }
+    constructor(delete_url) {
+        super('DeleteOffer')
+        this.delete_url = delete_url
     }
 
-    DeleteOffer(delete_url) {
-        axios.delete(baseURL + delete_url)
+    DeleteOffer() {
+        axios.delete(baseURL + this.delete_url)
             .then((response) => {
                 console.log(response);
             })
             .catch((error) => {
                 console.log(error);
+                if (error.response.data.code == "401") {
+                    this.handle401Error()
+                }
             });
     }
 }

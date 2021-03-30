@@ -56,6 +56,14 @@
 
 > bin/console make:subscriber
 
+> bin/console make:controller RequestNewPasswordController
+
+> bin/console make:controller ResetPasswordController
+
+> bin/console make:controller UploadFileController
+
+> php ./vendor/bin/phpunit
+
 
 # Symfony Packages
 
@@ -104,6 +112,14 @@
 > composer require nelmio/cors-bundle
 
 > composer require "lexik/jwt-authentication-bundle"
+
+> composer require symfony/swiftmailer-bundle
+
+> composer require phpunit/phpunit
+
+> composer require --dev test-pack http-client justinrainbow/json-schema
+
+> composer require symfony/apache-pack
 
 
 # Database 
@@ -170,6 +186,10 @@ bin/console doctrine:fixtures:load -n -q
 
 > php bin/console make:fixtures UserFixtures
 
+> bin/console make:entity LostPassword
+
+> bin/console doctrine:query:sql ""
+
 
 # .htaccess file in public folder
 
@@ -208,6 +228,8 @@ bin/console doctrine:fixtures:load -n -q
 > bin/console doctrine:migrations:migrate
 
 > bin/console debug:container
+
+> bin/console debug:event
 
 > bin/console cache:clear
 
@@ -254,13 +276,6 @@ bin/console doctrine:fixtures:load -n -q
 > bin/console make:entity --regenerate
 
 
-# Cache/Redis
-
-> composer require symfony/cache
-
-> sudo apt-get install redis-server php-redis
-
-
 # Swiftmailer
 
 > composer require symfony/swiftmailer-bundle
@@ -295,6 +310,7 @@ Change the HerokuCache.php/FilesCache.php file from the Utils folder to look lik
     # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 ```
 
+
 ## .gitignore to get database over heroku
 
 ```
@@ -309,6 +325,7 @@ Change the HerokuCache.php/FilesCache.php file from the Utils folder to look lik
 > git add .
 
 > git commit -m "change"
+
 
 ## Installation and Deployment
 
@@ -333,6 +350,21 @@ Change the HerokuCache.php/FilesCache.php file from the Utils folder to look lik
 > git push heroku master
 
 > heroku open
+
+
+## Setup Client home and admin
+
+> echo 'web: vendor/bin/heroku-php-apache2 /' > Procfile
+
+> touch index.php
+
+```
+<?php
+
+include('index.html');
+```
+
+> change baseURL in config file for clients
 
 
 # Git Repo Setup 

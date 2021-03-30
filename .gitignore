@@ -39,5 +39,5 @@ npm-debug.log
 ###< friendsofphp/php-cs-fixer ###
 
 ###> lexik/jwt-authentication-bundle ###
-/config/jwt/*.pem
+# /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###

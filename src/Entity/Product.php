@@ -6,19 +6,19 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -29,7 +29,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Entity
  * @Vich\Uploadable
- * @ApiResource(iri="http://schema.org/Product",normalizationContext={"groups"={"read"}},denormalizationContext={"groups"={"write"}})
+ * @ApiResource(iri="http://schema.org/Product",normalizationContext={"groups"={"read"}},denormalizationContext={"groups"={"write"}},
+ * cacheHeaders={"max_age"=20, "shared_max_age"=20}
+ * )
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "name": "partial", "description": "partial"})
  * @ApiFilter(OrderFilter::class, properties={"id", "name"}, arguments={"orderParameterName"="order"})
  * @ApiFilter(ExistsFilter::class, properties={"image"})
@@ -188,3 +190,4 @@ class Product
         return $this;
     }
 }
+

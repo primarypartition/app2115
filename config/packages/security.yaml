@@ -20,11 +20,6 @@ security:
             stateless: true
             anonymous: true
 
-        api_offers:
-            pattern: ^/api/offers
-            stateless: true
-            anonymous: true
-
         api:
             pattern: ^/api
             stateless: true
@@ -73,4 +68,4 @@ security:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/products, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
